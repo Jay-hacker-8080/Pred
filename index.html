@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blade Mod Login</title>
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: url('dradvs.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: #00ff00;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo img {
+            width: 150px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            background-color: #000;
+            color: #00ff00;
+            font-size: 16px;
+        }
+
+        .input-group input[readonly] {
+            background-color: transparent;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button {
+            width: 48%;
+            padding: 10px;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            background-color: transparent;
+            color: #00ff00;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #00ff00;
+            color: #000;
+        }
+
+        .error-message {
+            color: #ff0000;
+            margin-top: 10px;
+        }
+
+        /* Popup Styles */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-box {
+            background-color: #111;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .popup-box h3 {
+            margin-bottom: 20px;
+            color: #00ff00;
+        }
+
+        .popup-box button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            background-color: transparent;
+            color: #00ff00;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .popup-box button:hover {
+            background-color: #00ff00;
+            color: #000;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <div class="logo">
+            <img src="bladelogo1.png" alt="Blade Mod Logo">
+        </div>
+        <form id="login-form" onsubmit="return handleLogin(event)">
+            <div class="input-group">
+                <label for="game-mode">Game Mode</label>
+                <input type="text" id="game-mode" name="game_name" placeholder="Select Game Mode" readonly onclick="showPopup()">
+            </div>
+            <div class="input-group">
+                <label for="game-version">Game Version</label>
+                <input type="text" id="game-version" name="game_version" placeholder="Game Version" readonly>
+            </div>
+            <div class="input-group">
+                <label for="license_key">Paid Key</label>
+                <input type="text" id="license_key" name="license_key" placeholder="Enter your key" required>
+            </div>
+            <div class="error-message" id="error-message"></div>
+            <div class="button-group">
+                <button type="button" class="button" onclick="getKey()">Get Key</button>
+                <button type="submit" class="button">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="popup-container" id="popupContainer">
+        <div class="popup-box">
+            <h3>Select a Game Mode</h3>
+            <button onclick="selectGameMode('91 Club')">91 Club</button>
+            <button onclick="selectGameMode('55 Club')">55 Club</button>
+            <button onclick="selectGameMode('82 Lottery')">82 Lottery</button>
+            <button onclick="selectGameMode('Goa Games')">Goa Games</button>
+            <button onclick="selectGameMode('Big Daddy')">Big Daddy</button>
+            <button onclick="selectGameMode('OK Win')">OK Win</button>
+            <button onclick="selectGameMode('TC Lottery')">TC Lottery</button>
+            <button onclick="selectGameMode('Dream 99')">Dream 99</button>
+            <button onclick="selectGameMode('IN999')">IN999</button>
+            <button onclick="closePopup()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        function showPopup() {
+            document.getElementById('popupContainer').style.display = 'flex';
+        }
+
+        function selectGameMode(gameMode) {
+            document.getElementById('game-mode').value = gameMode;
+            document.getElementById('game-version').value = '1 minute';
+            document.getElementById('popupContainer').style.display = 'none';
+        }
+
+        function closePopup() {
+            document.getElementById('popupContainer').style.display = 'none';
+        }
+
+        function getKey() {
+            window.location.href = "https://t.me/Hackerblade";
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const licenseKey = document.getElementById('license_key').value;
+            const errorMessage = document.getElementById('error-message');
+
+            try {
+                const response = await fetch('login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `license_key=${encodeURIComponent(licenseKey)}`
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = "dashboard.php";
+                } else {
+                    errorMessage.textContent = "Invalid key. Please try again.";
+                }
+            } catch (error) {
+                errorMessage.textContent = "Error logging in. Please try again later.";
+            }
+        }
+
+        function checkInternetConnection() {
+            if (!navigator.onLine) {
+                document.body.innerHTML = "";
+                document.body.style.backgroundColor = "#ffffff";
+            }
+        }
+
+        window.addEventListener('offline', checkInternetConnection);
+        window.addEventListener('online', () => location.reload());
+        checkInternetConnection();
+
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5 },
+                size: { value: 3, random: true }
+            },
+            interactivity: {
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
